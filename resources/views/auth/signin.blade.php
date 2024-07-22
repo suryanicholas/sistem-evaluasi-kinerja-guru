@@ -13,16 +13,21 @@
                 <div class="h4 text-center mb-3">
                     <span>Silahkan Masuk</span>
                 </div>
-                <form class="mx-4" method="post">
+                <form class="mx-4" method="post" action="{{ route('signin') }}">
                     @csrf
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" name="username" maxlength="33" placeholder="Nama Pengguna">
+                        <input type="text" class="form-control" id="username" value="{{ old('username') }}" name="username" maxlength="33" placeholder="Nama Pengguna" required>
                         <label for="username">Nama Pengguna</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control p-2" id="password" name="password" placeholder="Kata Sandi">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Kata Sandi" required>
                         <label for="password">Kata Sandi</label>
-                        <small class="text-danger">Lorem, ipsum dolor sit amet consectetur adipisicing elit. In?</small>
+                        @error('username')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        @error('password')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mb-3 text-center">
                         <button class="btn btn-primary" type="submit">Masuk</button>

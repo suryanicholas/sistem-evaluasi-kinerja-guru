@@ -14,18 +14,13 @@
                 width: 100vw;
                 height: 100vh;
                 overscroll-behavior: none
-            }
-
+            } 
             main.contents{
                 scroll-snap-type: y mandatory;
             }
 
             main.contents .container{
                 scroll-snap-align: start
-            }
-
-            .welcome.container h1{
-                font-size: 54px
             }
         </style>
         @yield('styles')
@@ -59,10 +54,29 @@
                     </div>
                 </div>
             </header>
-            @yield('contents')
+            <main class="contents flex-fill overflow-y-auto">
+                @yield('contents')
+            </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script>
+            var s = true;
+            $('a[href*="#"]').click(function (e) { 
+                e.preventDefault();
+
+                if(s){
+                    s = false;
+                    $("main.contents").css("scroll-snap-type", "none");
+                    $("main.contents").animate({
+                        scrollTop: $(this.hash).offset().top
+                    }, 800, function(){
+                        $("main.contents").css("scroll-snap-type", "y mandatory");
+                        s = true;
+                    });
+                }
+            });
+        </script>
         @yield('scripts')
     </body>
 </html>
