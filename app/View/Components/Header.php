@@ -8,12 +8,17 @@ use Illuminate\View\Component;
 
 class Header extends Component
 {
+    public $title;
+    public $authority = [
+        'admin' => 'primary',
+        'master' => 'warning'
+    ];
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($title)
     {
-        //
+        $this->title = $title;
     }
 
     /**

@@ -27,33 +27,7 @@
     </head>
     <body>
         <div class="container-fluid h-100 d-flex flex-column p-0">
-            <header class="text-bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-auto d-flex align-items-center">
-                            <a class="nav-link fs-4" href="/">SDN 1068212</a>
-                        </div>
-                        <div class="col-auto ms-auto">
-                            <nav class="navbar">
-                                {{-- Default | Navigasi untuk Tata Usaha --}}
-                                <div class="nav-item d-flex">
-                                    <a href="/signin" class="btn btn-secondary p-1 d-flex">
-                                        <span class="material-symbols-outlined">shield_person</span>
-                                    </a>
-                                </div>
-
-                                {{-- Setelah Konfirmasi | Navigasi keluar untuk yang mengevaluasi (Siswa/Orang Tua dan Sejawat) --}}
-                                {{-- <div class="nav-item d-flex align-items-center text-bg-dark rounded">
-                                    <span class="px-2">Agustaria Br Bangun</span>
-                                    <a href="/signin" class="btn btn-danger p-1 d-flex">
-                                        <span class="material-symbols-outlined">logout</span>
-                                    </a>
-                                </div> --}}
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <x-header title=""></x-header>
             <main class="contents flex-fill overflow-y-auto">
                 @yield('contents')
             </main>

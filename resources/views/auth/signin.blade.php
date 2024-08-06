@@ -6,14 +6,14 @@
         <div class="row justify-content-center rounded overflow-hidden">
             <div class="col d-none bg-light d-lg-flex flex-column align-items-center justify-content-center">
                 <div class="text-secondary fs-5">Sistem Evaluasi Kinerja</div>
-                <div class="h1">SDN 1068212</div>
+                <div class="h1">SD Negeri 106821</div>
                 <div class="h5">Bandar Baru</div>
             </div>
             <div class="col col-lg-5 bg-light-subtle py-3">
                 <div class="h4 text-center mb-3">
                     <span>Silahkan Masuk</span>
                 </div>
-                <form class="mx-4" method="post" action="{{ route('signin') }}">
+                <form class="mx-4" method="post" action="{{ route('login') }}">
                     @csrf
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="username" value="{{ old('username') }}" name="username" maxlength="33" placeholder="Nama Pengguna" required>

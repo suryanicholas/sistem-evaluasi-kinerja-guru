@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -18,6 +19,7 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'title' => "Pengaturan Akun"
         ]);
     }
 
@@ -26,7 +28,14 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            Storage::delete('public/Collections/'. $request->user()->image);
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/Collections/', $imageName);
+        }
         $request->user()->fill($request->validated());
+        $request->user()->image = $imageName;
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -34,7 +43,12 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with(
+            'response', [
+                'type' => 'success',
+                'message' => 'Informasi Pengguna telah diperbarui.'
+            ]
+        );
     }
 
     /**

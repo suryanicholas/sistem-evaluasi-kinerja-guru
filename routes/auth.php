@@ -12,13 +12,8 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // Route::get('register', [RegisteredUserController::class, 'create'])
-    //             ->name('register');
-
-    // Route::post('register', [RegisteredUserController::class, 'store']);
-
     Route::get('signin', [AuthenticatedSessionController::class, 'create'])
-                ->name('signin');
+                ->name('login');
 
     Route::post('signin', [AuthenticatedSessionController::class, 'store']);
 
