@@ -7,7 +7,7 @@
     <x-snav active="{{ Request::is('dashboard/rooms*') }}" href="{{ route('rooms.index') }}" icon="meeting_room">Kelas</x-snav>
     <x-snav active="{{ Request::is('dashboard/students*') }}" href="{{ route('students.index') }}" icon="groups">Siswa</x-snav>
 
-    @if (Auth::user()->role == 'admin')
+    @if (Auth::user()->role == 'master')
     <div class="container-fluid mt-3 mb-1 bg-light">Akses Sistem</div>
     <x-snav active="{{ Request::is('dashboard/users') }}" href="{{ route('users.index') }}" icon="badge">Pengguna</x-snav>
     @endif

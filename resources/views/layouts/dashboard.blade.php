@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        @yield('meta')
         <title>SDN000000 | {{ $title }}</title>
-        {{-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> --}}
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
         {{-- Bootstrap@5.3.3 CSS Framework --}}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -51,7 +52,7 @@
                 <x-sidebar></x-sidebar>
                 <main class="col-12 col-md-9 col-xl-10 col-xxl-10 d-flex flex-column h-100">
                     <x-header :title="$title"></x-header>
-                    <div class="position-relative row flex-fill overflow-y-auto">
+                    <div id="mainContainer" class="position-relative row flex-fill overflow-y-auto">
                         @if (session('response'))
                         <x-alert :type="session('response')['type']">{{ session('response')['message'] }}</x-alert>
                         @endif
@@ -71,6 +72,21 @@
         {{-- Script for Mobile Sidebar --}}
         <script>
             $(document).ready(function(){
+                $('textarea').each(function (x, y) {
+                    let l = 1200;
+                    $(y).css('height', $(y)[0].scrollHeight + 'px');
+                    $(y).siblings('.charCount').children('span:first-child').text($(y).val().length);
+                    $(y).focus(function (){
+                        $(this).siblings('.charCount').toggleClass('d-none', '');
+                    }).blur(function (){
+                        $(this).siblings('.charCount').toggleClass('d-none', '');
+                    }).on('input', function () {
+                        $(y).css('height', 'auto');
+                        $(y).css('height', $(y)[0].scrollHeight + 'px');
+
+                        $(y).siblings('.charCount').children('span:first-child').text($(y).val().length);
+                    });
+                });
                 @if (session('response'))
                 const alertAC = new bootstrap.Alert("#alertPanel");
                 setTimeout(() => {

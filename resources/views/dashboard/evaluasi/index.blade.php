@@ -5,41 +5,49 @@
         <x-toolbar :require="[
             'route' => [
                 'destroy' => false,
-                'create' => route('evaluations.create')
+                'create' => false
             ],
             'search' => false
-        ]"></x-toolbar>
+        ]">
+            <form action="{{ route('evaluations.store') }}" method="post">
+                @csrf
+                <button class="btn btn-primary p-1 material-symbols-outlined" type="submit">add</button>
+            </form>
+        </x-toolbar>
         <div class="container-fluid py-3 flex-fill overflow-y-auto">
-            @for ($i = 1; $i <= 20; $i++)
-            <div class="row bg-light border rounded shadow overflow-hidden mb-3">
-                <div class="col-2 col-lg-1 d-flex align-items-center justify-content-center text-bg-secondary">
-                    <span class="fw-bold">{{ $i }}</span>
+            @foreach ($data as $item)
+            <div class="row bg-light border rounded mb-3 overflow-auto">
+                <div class="col-lg-1 d-flex align-items-center justify-content-center fw-bold text-bg-secondary">
+                    <span>{{ $loop->iteration }}</span>
                 </div>
-                <div class="col-10 col-lg-11">
+                <div class="col-lg-11">
                     <div class="row">
                         <div class="col-lg-12 text-truncate">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis magnam quod ipsum eaque voluptatibus, cumque iste eos vero qui possimus inventore ratione, provident quidem pariatur. Voluptate unde corrupti veniam beatae.</span>
+                            <span>{{ $item->title }}</span>
                         </div>
-                        <div class="col-6 col-lg-3">
-                            <small class="text-secondary">Responden</small>
-                            <div class="text-truncate">99</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-auto me-auto text-secondary d-flex align-items-center gap-1">
+                            <a href="{{ route('evaluations.show', $item->slug) }}" class="btn btn-light fs-5 p-2 material-symbols-outlined">monitoring</a>
+                            <a href="{{ route('evaluations.edit', $item->slug) }}" class="btn btn-light fs-5 p-2 material-symbols-outlined">edit</a>
+                            <form action="{{ route('evaluations.destroy', $item->slug) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-light fs-5 p-2 material-symbols-outlined">delete</button>
+                            </form>
                         </div>
-                        <div class="col-6 col-lg-3">
-                            <small class="text-secondary">Menyelesaikan</small>
-                            <div class="text-truncate">99</div>
+                        <div class="col-lg-3 text-secondary">
+                            <small>Responden</small>
+                            <div>-</div>
                         </div>
-                        <div class="col-12 col-lg-3">
-                            <small class="text-secondary">Berakhir</small>
-                            <div class="text-truncate">02 Agustus 2024</div>
-                        </div>
-                        <div class="col-12 col-lg-3 d-flex align-items-center gap-2">
-                            <a href="#" class="btn p-1 fs-5 btn-light material-symbols-outlined">monitoring</a>
-                            <a href="#" class="btn p-1 fs-5 btn-light material-symbols-outlined">edit</a>
+                        <div class="col-lg-3 text-secondary">
+                            <small>Berakhir</small>
+                            <div>{{ $item->periode ? \Carbon\Carbon::parse(json_decode($item->periode)->end)->locale('id')->translatedFormat('d F Y') : '-' }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            @endfor
+            @endforeach
         </div>
         <x-paginate :paginateContent="$data"></x-paginate>
     </div>

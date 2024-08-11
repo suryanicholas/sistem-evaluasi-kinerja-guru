@@ -33,9 +33,11 @@ class ProfileController extends Controller
             Storage::delete('public/Collections/'. $request->user()->image);
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('public/Collections/', $imageName);
+            $request->user()->fill($request->validated());
+            $request->user()->image = $imageName;
+        } else{
+            $request->user()->fill($request->validated());
         }
-        $request->user()->fill($request->validated());
-        $request->user()->image = $imageName;
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

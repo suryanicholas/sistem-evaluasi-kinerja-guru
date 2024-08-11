@@ -50,7 +50,7 @@
             </div>
             <div class="col-lg-4 d-none d-lg-flex flex-column">
                 <div class="container h-100 overflow-y-auto">
-                    <div class="container position-sticky text-bg-dark sticky-top overflow-y-auto">
+                    <div id="target" class="container position-sticky text-bg-dark sticky-top overflow-y-auto">
                         <span>Akses Cepat</span>
                     </div>
                     <div class="nav-item">
@@ -66,30 +66,30 @@
 @endsection
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/assets/js/script.js"></script>
-<script>
-    const ctx = document.getElementById('yearlyPerformance');
-    Chart.defaults.color = '#fff';
-    Chart.defaults.borderColor = '#5e5e5e';
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script>
+        const ctx = document.getElementById('yearlyPerformance');
+        Chart.defaults.color = '#fff';
+        Chart.defaults.borderColor = '#5e5e5e';
 
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['2019', '2020', '2021', '2022', '2023'],
-        datasets: [{
-          label: ['Performa'],
-          data: [37.8, 78.8, 79.2, 82.1, 76.7],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+        new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['2019', '2020', '2021', '2022', '2023'],
+            datasets: [{
+            label: ['Performa'],
+            data: [37.8, 78.8, 79.2, 82.1, 76.7],
+            borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
         }
-      }
-    });
-  </script>
+        });
+    </script>
 @endsection

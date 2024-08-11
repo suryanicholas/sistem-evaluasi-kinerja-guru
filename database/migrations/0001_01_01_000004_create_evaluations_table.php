@@ -22,19 +22,26 @@ return new class extends Migration{
         });
         Schema::create('segments', function (Blueprint $table){
             $table->id();
-            $table->foreignId('evaluation_id');
-            $table->integer('index');
+            $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('index');
             $table->string('label')->nullable();
 
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table){
             $table->id();
-            $table->foreignId('segment_id');
+            $table->foreignId('segment_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('index');
             $table->string('question')->nullable();
-            $table->json('type')->nullable();
             
+            $table->timestamps();
+        });
+
+        Schema::create('responses', function (Blueprint $table){
+            $table->id();
+            $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->json('respondent');
+            $table->json('answers');
             $table->timestamps();
         });
     }
@@ -47,5 +54,6 @@ return new class extends Migration{
         Schema::dropIfExists('evaluations');
         Schema::dropIfExists('segments');
         Schema::dropIfExists('questions');
+        Schema::dropIfExists('responses');
     }
 };

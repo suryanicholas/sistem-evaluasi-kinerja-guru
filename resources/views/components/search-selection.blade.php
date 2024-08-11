@@ -27,11 +27,11 @@
         function selectActions() {
             $('.selectGroups .row button').each(function () {
                 let x = $(this).parents('.selectGroups').siblings('.searchOptions');
-                $(this).click(function () {
+                $(this).on('touchstart click', function (){
                     $(x).find('input[type="text"]').val('');
                     $(x).find('input[type="text"]').val($(this).text());
                     $(x).find('input[type="hidden"]').val($(this).data('code'));
-                })
+                });
             });
         }
         selectActions();
@@ -73,7 +73,7 @@
                     $(x).val($(y).data('code'));
                     $(this).val($(y).text());
                 }
-            }, 100);
+            }, 225);
         }).on('input', function () {
             $(this).siblings("input[type='hidden']").val('');
             clearTimeout(i);

@@ -20,7 +20,7 @@ class Evaluation extends Model
         'periode' => 'json'
     ];
 
-    public function segment()
+    public function segments()
     {
         return $this->hasMany(Segment::class);
     }

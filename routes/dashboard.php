@@ -6,6 +6,8 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Master;
+use App\Models\Evaluation;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
@@ -25,7 +27,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     });
 
-    Route::prefix('users')->group(function () {
+    Route::middleware('master')->prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/create', [RegisteredUserController::class, 'create'])
                 ->name('users.create');
@@ -35,5 +37,21 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::delete('{user:username}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
-    Route::resource('evaluations', EvaluationController::class);
+    Route::prefix('evaluations')->group(function(){
+        // Evaluasi: Index
+        Route::get('/', [EvaluationController::class, 'index'])->name('evaluations.index');
+        
+        // Evaluasi: Create | Store
+        Route::post('create', [EvaluationController::class, 'store'])->name('evaluations.store');
+
+        // Evaluasi: Show
+        Route::get('{evaluation:slug}', [EvaluationController::class, 'show'])->name('evaluations.show');
+
+        // Evaluasi: Edit | Update
+        Route::get('{evaluation:slug}/edit', [EvaluationController::class, 'edit'])->name('evaluations.edit');
+        Route::match(['put','patch'], '{evaluation:slug}', [EvaluationController::class, 'update'])->name('evaluations.update');
+
+        // Evaluasi: Delete
+        Route::delete('{evaluation:slug}', [EvaluationController::class, 'destroy'])->name('evaluations.destroy');
+    });
 });

@@ -28,7 +28,7 @@ return new class extends Migration {
         // Tabel Kelas
         Schema::create('rooms', function (Blueprint $table){
             $table->id();
-            $table->foreignId('teacher_id')->unique();
+            $table->foreignId('teacher_id')->constrained()->unique()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('code')->unique();
             $table->string('name');
             $table->timestamps();
@@ -38,7 +38,7 @@ return new class extends Migration {
         Schema::create('students', function (Blueprint $table){
             $table->id();
             $table->unsignedBigInteger('code')->unique();
-            $table->foreignId('room_id')->index();
+            $table->foreignId('room_id')->constrained()->index()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->string('name');
             $table->enum('gender', ['male', 'female']);

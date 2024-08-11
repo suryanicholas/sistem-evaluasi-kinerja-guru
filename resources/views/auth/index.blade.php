@@ -1,5 +1,4 @@
 @extends('layouts.dashboard')
-
 @section('contents')
     <div class="container h-100 d-flex flex-column">
         <x-toolbar :require="[

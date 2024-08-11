@@ -37,6 +37,7 @@
                     </a>
                 </div>
                 @endif
+                {{ $slot }}
             </nav>
         </div>
     </div>
