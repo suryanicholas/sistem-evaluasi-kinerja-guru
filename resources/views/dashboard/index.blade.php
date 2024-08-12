@@ -53,12 +53,11 @@
                     <div id="target" class="container position-sticky text-bg-dark sticky-top overflow-y-auto">
                         <span>Akses Cepat</span>
                     </div>
+                    @foreach ($evaluations as $item)
                     <div class="nav-item">
-                        <a class="nav-link link-primary" href="#">Evaluasi ABC</a>
+                        <a class="nav-link link-primary" href="{{ route('evaluations.show', $item->slug) }}">{{ $item->title }}</a>
                     </div>
-                    <div class="nav-item">
-                        <a class="nav-link link-primary" href="#">Evaluasi ABC</a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

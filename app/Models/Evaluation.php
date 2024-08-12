@@ -29,4 +29,8 @@ class Evaluation extends Model
     {
         return 'slug';
     }
+
+    public function respondent(){
+        return $this->hasMany(Response::class);
+    }
 }

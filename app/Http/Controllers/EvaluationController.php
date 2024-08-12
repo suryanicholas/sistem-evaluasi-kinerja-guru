@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evaluation;
-use App\Models\Question;
 use App\Models\Segment;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\Question;
+use App\Models\Response;
+use App\Models\Evaluation;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -199,5 +203,85 @@ class EvaluationController extends Controller
                 'message' => "$evaluation->title telah dihapus!"
             ]
         );
+    }
+
+    /**
+     * 
+     */
+    public function evaluateVerify(Evaluation $evaluation)
+    {
+        if (session()->has('identified')) {
+            // Mengambil data Response yang sesuai dengan token
+            $response = $evaluation->respondent()->where('token', session('identified'))->first();
+    
+            if ($response) {
+                // Memanggil metode identified() pada model Response
+                $identified = $response->identified();
+                dd($identified); // Debug output
+            } else {
+                dd('Response not found');
+            }
+        }
+
+        return view('public.auth', [
+            'title' => $evaluation->title,
+            'data' => $evaluation
+        ]);
+    }
+
+    public function evaluateAuth(Evaluation $evaluation, Request $request)
+    {
+        if($request->type === "student"){
+            if(Student::where('code', $request->identify)->count()){
+                $respondent = Response::create([
+                    'token' => Str::random(64),
+                    'evaluation_id' => $evaluation->id,
+                    'type' => $request->type,
+                    'respondent_id' => $request->identify
+                ]);
+
+                session(['identified' => $respondent->token]);
+
+                return redirect()->route('evaluate.index', $evaluation->slug)->with(
+                    'response', [
+                        'type' => 'success',
+                        'message' => 'Identified'
+                    ]
+                );
+            }
+        } elseif($request->type === "teacher"){
+            if(Teacher::where('code', $request->identify)->count()){
+                $respondent = Response::create([
+                    'token' => Str::random(64),
+                    'evaluation_id' => $evaluation->id,
+                    'type' => $request->type,
+                    'respondent_id' => $request->identify
+                ]);
+
+                session(['identified' => $respondent->token]);
+                
+                return redirect()->route('evaluate.index', $evaluation->slug)->with(
+                    'response', [
+                        'type' => 'success',
+                        'message' => 'Identified'
+                    ]
+                );
+            }
+        }
+        return redirect()->to("#identifyForm")->with(
+            'response', [
+                'type' => 'danger',
+                'message' => 'Kami tidak menemukan informasi tentang anda!'
+            ]
+        );
+    }
+
+    public function evaluateStart(Evaluation $evaluation, Response $respondent)
+    {
+        return view('public.evaluate', [
+            'title' => $evaluation->title,
+            'data' => $evaluation,
+            'respondent' => $respondent
+        ]);
     }
 }

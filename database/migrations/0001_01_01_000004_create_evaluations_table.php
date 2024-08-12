@@ -39,9 +39,11 @@ return new class extends Migration{
 
         Schema::create('responses', function (Blueprint $table){
             $table->id();
+            $table->string('token')->unique();
             $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->json('respondent');
-            $table->json('answers');
+            $table->enum('type', ['teacher', 'student'])->default('student');
+            $table->string('respondent_id');
+            $table->json('answers')->nullable();
             $table->timestamps();
         });
     }

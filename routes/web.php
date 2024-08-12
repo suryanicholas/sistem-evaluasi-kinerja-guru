@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,17 +11,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/verify', function () {
-    return view('public.auth',[
-        'title' => 'SDN1068212 Bandar Baru'
-    ]);
-});
-
-
-Route::get('/verified', function () {
-    return view('public.home',[
-        'title' => 'SDN1068212 Bandar Baru'
-    ]);
+Route::prefix('/e/{evaluation:slug}')->group(function (){
+    Route::get('/', [EvaluationController::class, 'evaluateVerify'])->name('evaluate.index');
+    Route::get('{response:token}', [EvaluationController::class, 'evaluateStart'])->name('evaluate.start');
+    Route::post('/', [EvaluationController::class, 'evaluateAuth'])->name('evaluate.verify');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
