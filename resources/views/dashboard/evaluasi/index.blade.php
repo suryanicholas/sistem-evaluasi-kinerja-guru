@@ -35,6 +35,7 @@
                                 @method('delete')
                                 <button class="btn btn-light fs-5 p-2 material-symbols-outlined">delete</button>
                             </form>
+                            <a href="{{ route('evaluate.index', $item->slug) }}" target="_blank" class="btn btn-light fs-5 p-2 material-symbols-outlined">open_in_new</a>
                         </div>
                         <div class="col-lg-3 text-secondary">
                             <small>Responden</small>
