@@ -27,7 +27,10 @@
     </head>
     <body>
         <div class="container-fluid h-100 d-flex flex-column p-0">
-            <x-header title=""></x-header>
+            <x-header :content="[
+                'title' => false,
+                'data' => session()->has('identified') && isset($data) ? $data : false
+            ]"></x-header>
             <main class="contents flex-fill overflow-y-auto">
                 @yield('contents')
             </main>

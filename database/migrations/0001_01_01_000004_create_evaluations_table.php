@@ -42,7 +42,7 @@ return new class extends Migration{
             $table->string('token')->unique();
             $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('type', ['teacher', 'student'])->default('student');
-            $table->string('respondent_id');
+            $table->unsignedBigInteger('respondent');
             $table->json('answers')->nullable();
             $table->timestamps();
         });

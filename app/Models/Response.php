@@ -13,12 +13,11 @@ class Response extends Model
         'token',
         'evaluation_id',
         'type',
-        'respondent_id',
+        'respondent',
         'answers'
     ];
 
     protected $casts = [
-        'respondent' => 'json',
         'answers' => 'json'
     ];
 

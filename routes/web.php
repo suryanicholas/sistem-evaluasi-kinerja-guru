@@ -15,6 +15,7 @@ Route::prefix('/e/{evaluation:slug}')->group(function (){
     Route::get('/', [EvaluationController::class, 'evaluateVerify'])->name('evaluate.index');
     Route::get('{response:token}', [EvaluationController::class, 'evaluateStart'])->name('evaluate.start');
     Route::post('/', [EvaluationController::class, 'evaluateAuth'])->name('evaluate.verify');
+    Route::post('logout', [EvaluationController::class, 'evaluateEnd'])->name('evaluate.end');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

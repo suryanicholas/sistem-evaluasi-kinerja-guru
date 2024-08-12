@@ -209,17 +209,11 @@ class EvaluationController extends Controller
      * 
      */
     public function evaluateVerify(Evaluation $evaluation)
-    {
-        if (session()->has('identified')) {
-            // Mengambil data Response yang sesuai dengan token
-            $response = $evaluation->respondent()->where('token', session('identified'))->first();
-    
-            if ($response) {
-                // Memanggil metode identified() pada model Response
-                $identified = $response->identified();
-                dd($identified); // Debug output
-            } else {
-                dd('Response not found');
+    {   
+        if(session()->has('identified')){
+            $respondent = $evaluation->respondent->where('token', session('identified'))->first();
+            if($respondent){
+                return redirect()->route('evaluate.start', [$evaluation->slug, $respondent->token]);
             }
         }
 
@@ -231,14 +225,23 @@ class EvaluationController extends Controller
 
     public function evaluateAuth(Evaluation $evaluation, Request $request)
     {
+
+        // Memeriksa tipe dari Nomor Identitas Calon Responden
         if($request->type === "student"){
-            if(Student::where('code', $request->identify)->count()){
-                $respondent = Response::create([
-                    'token' => Str::random(64),
-                    'evaluation_id' => $evaluation->id,
-                    'type' => $request->type,
-                    'respondent_id' => $request->identify
-                ]);
+            $student = Student::where('code', $request->identify)->first();
+            // Memeriksa apakah Siswa dengan Nomor Identitas tersebut ada
+            if($student){
+
+                $respondent = $evaluation->respondent()->where('respondent', $student->id)->first();
+
+                if($respondent === null){
+                    $respondent = Response::create([
+                        'token' => Str::random(64),
+                        'evaluation_id' => $evaluation->id,
+                        'type' => $request->type,
+                        'respondent' => $student->id
+                    ]);
+                }
 
                 session(['identified' => $respondent->token]);
 
@@ -250,12 +253,14 @@ class EvaluationController extends Controller
                 );
             }
         } elseif($request->type === "teacher"){
+
+            // Memeriksa apakah Guru dengan Nomor Identitas tersebut ada
             if(Teacher::where('code', $request->identify)->count()){
                 $respondent = Response::create([
                     'token' => Str::random(64),
                     'evaluation_id' => $evaluation->id,
                     'type' => $request->type,
-                    'respondent_id' => $request->identify
+                    'respondent' => Teacher::where('code', $request->identify)->first()->id
                 ]);
 
                 session(['identified' => $respondent->token]);
@@ -278,10 +283,23 @@ class EvaluationController extends Controller
 
     public function evaluateStart(Evaluation $evaluation, Response $respondent)
     {
+        if(session()->missing('identified')){
+            return redirect()->route('evaluate.index', $evaluation->slug);
+        }
+
         return view('public.evaluate', [
             'title' => $evaluation->title,
             'data' => $evaluation,
             'respondent' => $respondent
         ]);
+    }
+
+    public function evaluateEnd(Evaluation $evaluation)
+    {
+        if(session()->has('identified')){
+            session()->forget('identified');
+        }
+
+        return redirect()->route('evaluate.verify', $evaluation->slug);
     }
 }

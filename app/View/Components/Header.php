@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class Header extends Component
 {
-    public $title;
+    public $evaluation, $title;
     public $authority = [
         'admin' => 'primary',
         'master' => 'warning'
@@ -16,9 +16,10 @@ class Header extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($title)
+    public function __construct($content)
     {
-        $this->title = $title;
+        $this->title = $content['title'] ? $content['title'] : '' ;
+        $this->evaluation = $content['data'] ? $content['data'] : false;
     }
 
     /**

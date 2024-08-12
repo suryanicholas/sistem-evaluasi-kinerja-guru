@@ -75,27 +75,30 @@
                 <div class="col-auto ms-auto">
                     <nav class="navbar">
                         {{-- Default | Navigasi untuk Tata Usaha --}}
-                        @if (Auth::user())
-                        <div class="nav-item d-flex">
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary p-1 d-flex">
-                                <span class="material-symbols-outlined">shield_person</span>
-                            </a>
-                        </div>
+                        @if ($evaluation)
+                            {{-- Setelah Konfirmasi | Navigasi keluar untuk yang mengevaluasi (Siswa/Orang Tua dan Sejawat) --}}
+                            <form action="{{ route('evaluate.end', $evaluation->slug) }}" method="POST" class="nav-item d-flex align-items-center text-bg-dark rounded">
+                                @csrf
+                                <span class="px-2">{{ $evaluation->respondent()->where('token', session('identified'))->first()->identified->name }}</span>
+                                <button type="submit" class="btn btn-danger p-1 d-flex">
+                                    <span class="material-symbols-outlined">logout</span>
+                                </button>
+                            </form>
                         @else
-                        <div class="nav-item d-flex">
-                            <a href="{{ route('login') }}" class="btn btn-secondary p-1 d-flex">
-                                <span class="material-symbols-outlined">shield_person</span>
-                            </a>
-                        </div>
+                            @if (Auth::user())
+                            <div class="nav-item d-flex">
+                                <a href="{{ route('dashboard') }}" class="btn btn-secondary p-1 d-flex">
+                                    <span class="material-symbols-outlined">shield_person</span>
+                                </a>
+                            </div>
+                            @else
+                            <div class="nav-item d-flex">
+                                <a href="{{ route('login') }}" class="btn btn-secondary p-1 d-flex">
+                                    <span class="material-symbols-outlined">shield_person</span>
+                                </a>
+                            </div>
+                            @endif
                         @endif
-
-                        {{-- Setelah Konfirmasi | Navigasi keluar untuk yang mengevaluasi (Siswa/Orang Tua dan Sejawat) --}}
-                        {{-- <div class="nav-item d-flex align-items-center text-bg-dark rounded">
-                            <span class="px-2">Agustaria Br Bangun</span>
-                            <a href="/signin" class="btn btn-danger p-1 d-flex">
-                                <span class="material-symbols-outlined">logout</span>
-                            </a>
-                        </div> --}}
                     </nav>
                 </div>
             </div>
