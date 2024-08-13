@@ -46,7 +46,6 @@
         
         <div class="row flex-fill position-relative z-0">
             <div class="col-12 col-lg-8">
-                <canvas class="bg-dark p-2 rounded" id="yearlyPerformance"></canvas>
             </div>
             <div class="col-lg-4 d-none d-lg-flex flex-column">
                 <div class="container h-100 overflow-y-auto">
@@ -65,30 +64,5 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/assets/js/script.js"></script>
-    <script>
-        const ctx = document.getElementById('yearlyPerformance');
-        Chart.defaults.color = '#fff';
-        Chart.defaults.borderColor = '#5e5e5e';
-
-        new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['2019', '2020', '2021', '2022', '2023'],
-            datasets: [{
-            label: ['Performa'],
-            data: [37.8, 78.8, 79.2, 82.1, 76.7],
-            borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
-            }
-        }
-        });
-    </script>
 @endsection
