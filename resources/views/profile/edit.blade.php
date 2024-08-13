@@ -20,6 +20,7 @@
 @endsection
 
 @section('contents')
+<main class="contents flex-fill overflow-y-auto">
     <div class="row h-100">
         <div class="col-lg-2 small overflow-auto border-end border-2">
             <div class="row mt-3 mb-1">
@@ -106,6 +107,7 @@
             </form>
         </div>
     </div>
+</main>
 @endsection
 
 @section('scripts')

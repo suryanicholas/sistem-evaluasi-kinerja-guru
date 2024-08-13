@@ -75,11 +75,11 @@
                 <div class="col-auto ms-auto">
                     <nav class="navbar">
                         {{-- Default | Navigasi untuk Tata Usaha --}}
-                        @if ($evaluation)
+                        @if (session()->has($evaluation->slug))
                             {{-- Setelah Konfirmasi | Navigasi keluar untuk yang mengevaluasi (Siswa/Orang Tua dan Sejawat) --}}
                             <form action="{{ route('evaluate.end', $evaluation->slug) }}" method="POST" class="nav-item d-flex align-items-center text-bg-dark rounded">
                                 @csrf
-                                <span class="px-2">{{ $evaluation->respondent()->where('token', session('identified'))->first()->identified->name }}</span>
+                                <span class="px-2">{{ $evaluation->respondent()->where('token', session($evaluation->slug))->first()->identified->name ?? 'Unknown' }}</span>
                                 <button type="submit" class="btn btn-danger p-1 d-flex">
                                     <span class="material-symbols-outlined">logout</span>
                                 </button>

@@ -210,8 +210,8 @@ class EvaluationController extends Controller
      */
     public function evaluateVerify(Evaluation $evaluation)
     {   
-        if(session()->has('identified')){
-            $respondent = $evaluation->respondent->where('token', session('identified'))->first();
+        if(session()->has($evaluation->slug)){
+            $respondent = $evaluation->respondent->where('token', session($evaluation->slug))->first();
             if($respondent){
                 return redirect()->route('evaluate.start', [$evaluation->slug, $respondent->token]);
             }
@@ -243,7 +243,7 @@ class EvaluationController extends Controller
                     ]);
                 }
 
-                session(['identified' => $respondent->token]);
+                session(["$evaluation->slug" => $respondent->token]);
 
                 return redirect()->route('evaluate.index', $evaluation->slug)->with(
                     'response', [
@@ -263,7 +263,7 @@ class EvaluationController extends Controller
                     'respondent' => Teacher::where('code', $request->identify)->first()->id
                 ]);
 
-                session(['identified' => $respondent->token]);
+                session(["$evaluation->slug" => $respondent->token]);
                 
                 return redirect()->route('evaluate.index', $evaluation->slug)->with(
                     'response', [
@@ -283,7 +283,7 @@ class EvaluationController extends Controller
 
     public function evaluateStart(Evaluation $evaluation, Response $respondent)
     {
-        if(session()->missing('identified')){
+        if(session()->missing($evaluation->slug)){
             return redirect()->route('evaluate.index', $evaluation->slug);
         }
 
@@ -296,8 +296,8 @@ class EvaluationController extends Controller
 
     public function evaluateEnd(Evaluation $evaluation)
     {
-        if(session()->has('identified')){
-            session()->forget('identified');
+        if(session()->has($evaluation->slug)){
+            session()->forget($evaluation->slug);
         }
 
         return redirect()->route('evaluate.verify', $evaluation->slug);

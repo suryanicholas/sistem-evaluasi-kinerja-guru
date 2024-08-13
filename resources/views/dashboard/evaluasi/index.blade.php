@@ -36,10 +36,11 @@
                                 <button class="btn btn-light fs-5 p-2 material-symbols-outlined">delete</button>
                             </form>
                             <a href="{{ route('evaluate.index', $item->slug) }}" target="_blank" class="btn btn-light fs-5 p-2 material-symbols-outlined">open_in_new</a>
+                            <button type="button" class="linkCopy btn btn-light fs-5 p-2 material-symbols-outlined">link</button>
                         </div>
                         <div class="col-lg-3 text-secondary">
                             <small>Responden</small>
-                            <div>-</div>
+                            <div>{{ $item->respondent->count() }}</div>
                         </div>
                         <div class="col-lg-3 text-secondary">
                             <small>Berakhir</small>
@@ -52,4 +53,30 @@
         </div>
         <x-paginate :paginateContent="$data"></x-paginate>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            let x = true;
+            $('.linkCopy[type="button"]').click(function (){
+                if(x){
+                    navigator.clipboard.writeText($(this).prev().attr('href'));
+
+                    x = false;
+                    
+                    if($(this).hasClass('btn-light')){
+                        $(this).removeClass('btn-light');
+                        $(this).addClass('btn-success');
+                    }
+
+                    setTimeout(() => {
+                        $(this).removeClass('btn-success');
+                        $(this).addClass('btn-light');
+                        x = true;
+                    }, 100);
+                }
+            });
+        });
+    </script>
 @endsection

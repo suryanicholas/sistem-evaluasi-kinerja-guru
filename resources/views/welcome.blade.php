@@ -9,6 +9,11 @@
 @endsection
 
 @section('contents')
+<x-header :content="[
+    'title' => false,
+    'data' => false
+]"></x-header>
+<main class="contents flex-fill overflow-y-auto">
     <div class="welcome container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
             <div class="col text-center">
@@ -16,6 +21,7 @@
             </div>
         </div>
     </div>
+</main>
 @endsection
 
 @section('scripts')
