@@ -213,7 +213,7 @@ class EvaluationController extends Controller
         if(session()->has($evaluation->slug)){
             $respondent = $evaluation->respondent->where('token', session($evaluation->slug))->first();
             if($respondent){
-                return redirect()->route('evaluate.start', [$evaluation->slug, $respondent->token]);
+                return redirect()->route('evaluate.start', $respondent->token);
             }
         }
 
@@ -281,25 +281,28 @@ class EvaluationController extends Controller
         );
     }
 
-    public function evaluateStart(Evaluation $evaluation, Response $respondent)
+    public function evaluateStart(Response $response)
     {
-        if(session()->missing($evaluation->slug)){
-            return redirect()->route('evaluate.index', $evaluation->slug);
+        if(session()->missing($response->evaluation->slug)){
+            return redirect()->route('evaluate.index', $response->evaluation->slug);
         }
 
         return view('public.evaluate', [
-            'title' => $evaluation->title,
-            'data' => $evaluation,
-            'respondent' => $respondent
+            'title' => $response->evaluation->title,
+            'data' => $response
         ]);
     }
 
-    public function evaluateEnd(Evaluation $evaluation)
+    public function evaluateEnd(Response $response)
     {
-        if(session()->has($evaluation->slug)){
-            session()->forget($evaluation->slug);
+        if(session()->has($response->evaluation->slug)){
+            session()->forget($response->evaluation->slug);
         }
 
-        return redirect()->route('evaluate.verify', $evaluation->slug);
+        return redirect()->route('evaluate.verify', $response->evaluation->slug);
+    }
+
+    public function evaluateStore(Request $request,Response $response){
+        dd($request);
     }
 }

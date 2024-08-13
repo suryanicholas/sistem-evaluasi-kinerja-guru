@@ -7,7 +7,7 @@
 @section('contents')
 <x-header :content="[
     'title' => false,
-    'data' => $data
+    'evaluation' => $data
 ]"></x-header>
 <main class="contents flex-fill overflow-y-auto">
     <div class="container h-100">

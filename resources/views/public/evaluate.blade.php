@@ -3,37 +3,37 @@
 @section('contents')
 <x-header :content="[
     'title' => false,
-    'data' => $data
+    'respondent' => $data->evaluation
 ]"></x-header>
 <main class="contents flex-fill overflow-y-auto">
-    <form class="container h-100 d-flex flex-column py-3 overflow-y-auto" action="" method="">
+    <form class="container h-100 d-flex flex-column py-3 overflow-y-auto" action="{{ route('evaluate.store', $data->token) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('put')
         <div class="row mb-3">
             <div class="col-lg-12 py-3 border">
                 <div class="row">
                     <div class="col-lg-12 text-bg-dark h2 py-2 text-truncate">
-                        <span>{{ $data->title }}</span>
+                        <span>{{ $data->evaluation->title }}</span>
                     </div>
                     <div class="col-lg-12 small text-bg-secondary">
                         <div class="row">
                             <div class="col-lg-auto">
                                 <span>Dipublikasi : </span>
-                                <span>{{ \Carbon\Carbon::parse(json_decode($data->periode)->start)->locale('id')->translatedFormat('d F Y') }}</span>
+                                <span>{{ \Carbon\Carbon::parse(json_decode($data->evaluation->periode)->start)->locale('id')->translatedFormat('d F Y') }}</span>
                             </div>
                             <div class="col-lg-auto ms-auto">
                                 <span>Berakhir : </span>
-                                <span>{{ \Carbon\Carbon::parse(json_decode($data->periode)->end)->locale('id')->translatedFormat('d F Y') }}</span>
+                                <span>{{ \Carbon\Carbon::parse(json_decode($data->evaluation->periode)->end)->locale('id')->translatedFormat('d F Y') }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        {{ $data->description }}
+                        {{ $data->evaluation->description }}
                     </div>
                 </div>
             </div>
         </div>
-        @foreach ($data->segments as $segment)
+        @foreach ($data->evaluation->segments as $segment)
         <div class="row mb-3 border">
             <div class="col-lg-12 h4 py-2 text-truncate">
                 <span>{{ $segment->label }}</span>
@@ -76,6 +76,9 @@
             </div>
         </div>
         @endforeach
+        <div class="mb-3 text-center">
+            <button class="btn btn-primary" type="submit">Kirim</button>
+        </div>
     </form>
 </main>
 @endsection

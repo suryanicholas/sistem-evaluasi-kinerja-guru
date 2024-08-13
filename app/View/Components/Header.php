@@ -19,7 +19,13 @@ class Header extends Component
     public function __construct($content)
     {
         $this->title = $content['title'] ? $content['title'] : '' ;
-        $this->evaluation = $content['data'] ? $content['data'] : false;
+        if(isset($content['respondent'])){
+            $this->evaluation = $content['respondent'] ? $content['respondent'] : false;
+        } elseif(isset($content['respondent'])){
+            $this->evaluation = $content['evaluation'] ? $content['evaluation'] : false;
+        } else {
+            $this->evaluation = false;
+        }
     }
 
     /**
