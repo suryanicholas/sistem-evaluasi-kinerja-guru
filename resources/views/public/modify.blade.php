@@ -49,23 +49,23 @@
                             <div class="col-lg-12 fs-5 mb-2 bor">{{ $item->question }}</div>
                             <div class="answersOptions col-lg-12">
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="4" id="s{{ $segment->index }}q{{ $item->index }}opt1">
+                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="4" id="s{{ $segment->index }}q{{ $item->index }}opt1" {{ $item->answers->where('response_id', $data->id)->first()->answer === 4 ? 'checked' : '' }}>
                                     <label class="form-check-label ms-2" for="s{{ $segment->index }}q{{ $item->index }}opt1">Sangat Setuju</label>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="3" id="s{{ $segment->index }}q{{ $item->index }}opt2">
+                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="3" id="s{{ $segment->index }}q{{ $item->index }}opt2" {{ $item->answers->where('response_id', $data->id)->first()->answer === 3 ? 'checked' : '' }}>
                                     <label class="form-check-label ms-2" for="s{{ $segment->index }}q{{ $item->index }}opt2">Setuju</label>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="2" id="s{{ $segment->index }}q{{ $item->index }}opt3">
+                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="2" id="s{{ $segment->index }}q{{ $item->index }}opt3" {{ $item->answers->where('response_id', $data->id)->first()->answer === 2 ? 'checked' : '' }}>
                                     <label class="form-check-label ms-2" for="s{{ $segment->index }}q{{ $item->index }}opt3">Netral</label>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="1" id="s{{ $segment->index }}q{{ $item->index }}opt4">
+                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="1" id="s{{ $segment->index }}q{{ $item->index }}opt4" {{ $item->answers->where('response_id', $data->id)->first()->answer === 1 ? 'checked' : '' }}>
                                     <label class="form-check-label ms-2" for="s{{ $segment->index }}q{{ $item->index }}opt4">Tidak Setuju</label>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="0" id="s{{ $segment->index }}q{{ $item->index }}opt5">
+                                    <input class="form-check-input" type="radio" name="s{{ $segment->index }}q{{ $item->index }}" value="0" id="s{{ $segment->index }}q{{ $item->index }}opt5" {{ $item->answers->where('response_id', $data->id)->first()->answer === 0 ? 'checked' : '' }}>
                                     <label class="form-check-label ms-2" for="s{{ $segment->index }}q{{ $item->index }}opt5">Sangat Tidak Setuju</label>
                                 </div>
                             </div>

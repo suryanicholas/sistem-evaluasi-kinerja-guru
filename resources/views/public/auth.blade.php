@@ -18,15 +18,21 @@
                     <span class="fs-4 fw-bold">{{ $data->title }}</span>
                 </div>
                 <small class="ms-auto text-secondary mb-3">Batas akhir partisipasi: {{ \Carbon\Carbon::parse(json_decode($data->periode)->end)->locale('id')->translatedFormat('d F Y') }}</small>
+                @if (\Carbon\Carbon::parse(json_decode($data->periode)->end)->isPast())
+                    <small class="text-bg-danger ms-auto px-2 rounded mb-3">Telah Berakhir</small>
+                @endif
                 <p>
                     {{ $data->description }}
                 </p>
             </div>
+            @if (!\Carbon\Carbon::parse(json_decode($data->periode)->end)->isPast())
             <div class="col-lg-12 text-center py-3">
                 <a class="btn btn-primary" href="#identifyForm">Mulai Evaluasi</a>
             </div>
+            @endif
         </div>
     </div>
+    @if (!\Carbon\Carbon::parse(json_decode($data->periode)->end)->isPast())
     <div id="identifyForm" class="container h-100">
         <div class="position-relative row h-100 align-items-center">
             <div class="col-md-6 mx-auto position-relative z-0">
@@ -63,6 +69,7 @@
             </div>
         </div>
     </div>
+    @endif
 </main>
 
 @endsection

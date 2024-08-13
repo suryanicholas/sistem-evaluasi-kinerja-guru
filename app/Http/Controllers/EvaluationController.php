@@ -209,7 +209,7 @@ class EvaluationController extends Controller
      * 
      */
     public function evaluateVerify(Evaluation $evaluation)
-    {   
+    {
         if(session()->has($evaluation->slug)){
             $respondent = $evaluation->respondent->where('token', session($evaluation->slug))->first();
             if($respondent){
@@ -287,6 +287,21 @@ class EvaluationController extends Controller
             return redirect()->route('evaluate.index', $response->evaluation->slug);
         }
 
+        if(Carbon::parse(json_decode($response->evaluation->periode)->end)->isPast()){
+            if(session()->has($response->evaluation->slug)){
+                session()->forget($response->evaluation->slug);
+            }
+    
+            return redirect()->route('evaluate.verify', $response->evaluation->slug);
+        }
+
+        if($response->already_sent){
+            return view('public.modify', [
+                'title' => $response->evaluation->title."Cuaks",
+                'data' => $response
+            ]);
+        }
+
         return view('public.evaluate', [
             'title' => $response->evaluation->title,
             'data' => $response
@@ -303,6 +318,36 @@ class EvaluationController extends Controller
     }
 
     public function evaluateStore(Request $request,Response $response){
-        dd($request);
+        $evaluation = $response->evaluation;
+        $segments = $evaluation->segments->all();
+
+        foreach($segments as $segment){
+            foreach($segment->question as $question){
+                $answer = $question->answers()->where([['response_id', $response->id], ['segment_id', $segment->id]])->first();
+                if($answer){
+                    $answer->update([
+                        'answer' => $request["s$segment->index"."q$question->index"]
+                    ]);
+                } else{
+                    $question->answers()->create([
+                        'response_id' => $response->id,
+                        'segment_id' => $segment->id,
+                        'answer' => $request["s$segment->index"."q$question->index"]
+                    ]);
+                }
+            }
+        }
+
+        if(!$response->already_sent){
+            $response->already_sent = true;
+            $response->save();
+        }
+
+        return redirect()->route('evaluate.start', $response->token)->with(
+            'response',[
+                'type' => 'success',
+                'message' => "Jawaban telah dikirim!"
+            ]
+        );
     }
 }

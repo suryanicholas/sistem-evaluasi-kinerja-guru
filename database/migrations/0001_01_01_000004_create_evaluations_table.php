@@ -43,7 +43,16 @@ return new class extends Migration{
             $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('type', ['teacher', 'student'])->default('student');
             $table->unsignedBigInteger('respondent');
-            $table->json('answers')->nullable();
+            $table->boolean('already_sent')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('answers', function (Blueprint $table){
+            $table->id();
+            $table->foreignId('response_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('segment_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('question_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('answer')->index()->nullable();
             $table->timestamps();
         });
     }
@@ -57,5 +66,6 @@ return new class extends Migration{
         Schema::dropIfExists('segments');
         Schema::dropIfExists('questions');
         Schema::dropIfExists('responses');
+        Schema::dropIfExists('answers');
     }
 };
