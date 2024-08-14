@@ -206,7 +206,7 @@ class EvaluationController extends Controller
     }
 
     /**
-     * 
+     * Evaluate Verify
      */
     public function evaluateVerify(Evaluation $evaluation)
     {
@@ -214,6 +214,8 @@ class EvaluationController extends Controller
             $respondent = $evaluation->respondent->where('token', session($evaluation->slug))->first();
             if($respondent){
                 return redirect()->route('evaluate.start', $respondent->token);
+            } else{
+                session()->forget($evaluation->slug);
             }
         }
 
@@ -222,6 +224,10 @@ class EvaluationController extends Controller
             'data' => $evaluation
         ]);
     }
+
+    /**
+     * Evaluate Auth
+     */
 
     public function evaluateAuth(Evaluation $evaluation, Request $request)
     {
@@ -234,7 +240,7 @@ class EvaluationController extends Controller
 
                 $respondent = $evaluation->respondent()->where('respondent', $student->id)->first();
 
-                if($respondent === null){
+                if(!$respondent){
                     $respondent = Response::create([
                         'token' => Str::random(64),
                         'evaluation_id' => $evaluation->id,
@@ -254,17 +260,24 @@ class EvaluationController extends Controller
             }
         } elseif($request->type === "teacher"){
 
-            // Memeriksa apakah Guru dengan Nomor Identitas tersebut ada
-            if(Teacher::where('code', $request->identify)->count()){
-                $respondent = Response::create([
-                    'token' => Str::random(64),
-                    'evaluation_id' => $evaluation->id,
-                    'type' => $request->type,
-                    'respondent' => Teacher::where('code', $request->identify)->first()->id
-                ]);
+            $teacher = Teacher::where('code', $request->identify)->first();
+            
+            if($teacher){
+                $respondent = $evaluation->respondent()->where('respondent', $teacher->id)->first();
+                
+                // Memeriksa apakah Guru dengan Nomor Identitas tersebut ada
+                if(!$respondent){
+                    $respondent = Response::create([
+                        'token' => Str::random(64),
+                        'evaluation_id' => $evaluation->id,
+                        'type' => $request->type,
+                        'respondent' => Teacher::where('code', $request->identify)->first()->id
+                    ]);
+                }
+                
 
                 session(["$evaluation->slug" => $respondent->token]);
-                
+                    
                 return redirect()->route('evaluate.index', $evaluation->slug)->with(
                     'response', [
                         'type' => 'success',
@@ -272,7 +285,9 @@ class EvaluationController extends Controller
                     ]
                 );
             }
+            
         }
+
         return redirect()->to("#identifyForm")->with(
             'response', [
                 'type' => 'danger',
@@ -281,12 +296,18 @@ class EvaluationController extends Controller
         );
     }
 
+    /**
+     * Evaluate Start
+     */
     public function evaluateStart(Response $response)
     {
+
+        // Pemeriksaan Sesi
         if(session()->missing($response->evaluation->slug)){
             return redirect()->route('evaluate.index', $response->evaluation->slug);
         }
 
+        // Memastikan Waktu Partisipasi masih valid
         if(Carbon::parse(json_decode($response->evaluation->periode)->end)->isPast()){
             if(session()->has($response->evaluation->slug)){
                 session()->forget($response->evaluation->slug);
@@ -295,6 +316,7 @@ class EvaluationController extends Controller
             return redirect()->route('evaluate.verify', $response->evaluation->slug);
         }
 
+        // Pemeriksaan Partisipasi
         if($response->already_sent){
             return view('public.modify', [
                 'title' => $response->evaluation->title."Cuaks",
@@ -308,6 +330,10 @@ class EvaluationController extends Controller
         ]);
     }
 
+
+    /**
+     * Evaluate End
+     */
     public function evaluateEnd(Response $response)
     {
         if(session()->has($response->evaluation->slug)){
@@ -317,6 +343,9 @@ class EvaluationController extends Controller
         return redirect()->route('evaluate.verify', $response->evaluation->slug);
     }
 
+    /**
+     * Evaluate Store
+     */
     public function evaluateStore(Request $request,Response $response){
         $evaluation = $response->evaluation;
         $segments = $evaluation->segments->all();

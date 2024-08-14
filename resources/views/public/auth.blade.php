@@ -14,6 +14,7 @@
         <div class="row py-3">
             <div class="col-lg-12">
                 <div>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</div>
+                <div>{{ session($data->slug) }}</div>
                 <div>
                     <span class="fs-4 fw-bold">{{ $data->title }}</span>
                 </div>
