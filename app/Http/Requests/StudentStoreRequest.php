@@ -17,7 +17,7 @@ class StudentStoreRequest extends FormRequest
     public function rules() : array
     {
         return [
-            'code' => "required|unique:students,code",
+            'code' => "required|digits:10|unique:students,code",
             'name' => "required|max:120",
             'gender' => "required",
             'birthPlace' => "required|max:50",
@@ -39,6 +39,7 @@ class StudentStoreRequest extends FormRequest
         return [
             '*.required' => "Mohon mengisi bagian ini.",
             'code.unique' => "NISN ini telah digunakan",
+            'code.digits' => "Format NISN tidak dikenali!",
             'name.max' => "Maksimal 120 Karakter",
             'birthPlace.max' => "Maksimal 50 Karakter",
             'birthDate.date' => "Tanggal tidak valid",

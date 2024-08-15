@@ -8,7 +8,7 @@
                     @csrf
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('nisn') border-danger @enderror" name="code" id="code" value="{{ old('code') }}" placeholder="">
+                            <input type="text" class="form-control @error('nisn') border-danger @enderror" name="code" id="code" value="{{ old('code') }}" maxlength="10" placeholder="">
                             <label for="code">Nomor Induk Siswa Nasional (NISN)</label>
                         </div>
                         @error('code')
