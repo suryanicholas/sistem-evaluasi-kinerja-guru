@@ -32,7 +32,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('code') border-danger @enderror" name="code" id="code" value="{{ old('code') }}" placeholder="">
+                            <input type="text" class="form-control @error('code') border-danger @enderror" name="code" id="code" maxlength="18" value="{{ old('code') }}" placeholder="">
                             <label for="code">Nomor Induk Pegawai (NIP)</label>
                         </div>
                         @error('code')

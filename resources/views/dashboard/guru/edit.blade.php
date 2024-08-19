@@ -61,7 +61,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="code" id="code" class="form-control" value="{{ $data->code }}">
+                            <input type="text" name="code" id="code" class="form-control" maxlength="18" value="{{ $data->code }}">
                             <label for="code">Nomor Induk Pegawai (NIP)</label>
                         </div>
                         @error('code')

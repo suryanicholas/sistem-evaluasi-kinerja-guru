@@ -2,7 +2,7 @@
 <div class="mb-3 position-relative">
     <div class="searchOptions form-floating position-relative z-1">
         <input type="hidden" name="{{ $attrName }}" value="{{ $valHidden }}">
-        <input type="text" name="{{ $attrName }}Name" id="dataName" class="form-control" value="{{ $valText }}" placeholder="" data-request="{{ $req }}">
+        <input type="text" name="{{ $attrName }}Name" autocomplete="off" id="dataName" class="form-control" value="{{ $valText }}" placeholder="" data-request="{{ $req }}">
         <label for="dataName">{{ $attrLabel }}</label>
     </div>
     <div class="selectGroups d-none z-1 container position-absolute border bg-secondary-subtle">

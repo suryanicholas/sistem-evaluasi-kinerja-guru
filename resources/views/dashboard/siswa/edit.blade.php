@@ -50,7 +50,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('name') border-danger @enderror" name="name" id="name" value="{{ old('name', $data->name) }}" placeholder="">
+                            <input type="text" class="form-control @error('name') border-danger @enderror" name="name" id="name" maxlength="10" value="{{ old('name', $data->name) }}" placeholder="">
                             <label for="name">Nama Siswa</label>
                         </div>
                         @error('name')
